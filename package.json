@@ -1,0 +1,31 @@
+{
+  "name": "apkacv",
+  "version": "1.0.0",
+  "description": "Social app with React and Express",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon -r esm server.js",
+    "client": "cd react-app && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Tomasz Ciołek",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^4.1.1",
+    "connect-pg-simple": "^6.0.1",
+    "connect-redis": "^3.4.2",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "express-validator": "^6.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.11.0",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
