@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon -r esm server.js",
-    "client": "cd new-app && npm start",
+    "client": "cd react-app && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Tomasz Ciołek",
