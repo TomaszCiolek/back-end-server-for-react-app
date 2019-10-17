@@ -51,7 +51,15 @@ function createAccount(firstName, lastName, email, password, rePassword, birthDa
 
 router.post('/register', [
 	check('email').isEmail(),
-	check('password').isLength({ min: 5 })
+	check('password').isLength({ min: 8 }),
+	check('password', "invalid password")
+		.custom((value, { req, loc, path }) => {
+			if (value !== req.body.rePassword) {
+				throw new Error("Passwords don't match");
+			} else {
+				return value;
+			}
+		})
 ],
 	function (req, res, next) {
 		const errors = validationResult(req);
