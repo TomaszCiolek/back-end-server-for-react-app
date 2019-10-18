@@ -4,13 +4,9 @@ const app = express();
 const server = require('http').Server(app);
 const port = 5000;
 const bodyParser = require('body-parser');
-// socket
-const io = require('socket.io')(server);
 // Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// JWT
-const jwt = require('jsonwebtoken');
 
 // CORS
 app.use(function (req, res, next) {

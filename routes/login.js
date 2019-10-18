@@ -22,13 +22,13 @@ client
 	.then(() => console.log('connected to database'))
 	.catch(err => console.error('database connection error', err.stack))
 
-function createAccount(firstName, lastName, email, password, rePassword, birthDate, gender) {
+function createAccount(firstName, lastName, email, password, birthDate, gender) {
 
 	return new Promise((resolve, reject) => {
 
 		const query = {
-			text: 'INSERT INTO accounts(firstname, lastname, email, password, gender) VALUES($1, $2, $3, $4, $5)',
-			values: [firstName, lastName, email, password, gender]
+			text: 'INSERT INTO accounts(firstname, lastname, email, password, gender, birthDate) VALUES($1, $2, $3, $4, $5, $6)',
+			values: [firstName, lastName, email, password, gender, birthDate]
 		};
 
 		client.query(query, (err, res) => {
@@ -87,7 +87,7 @@ router.post('/register', [
 							message: 'Account already exists'
 						})
 					} else {
-						createAccount(firstName, lastName, email, password, rePassword, birthDate, gender)
+						createAccount(firstName, lastName, email, password, birthDate, gender)
 							.then(function (message) {
 								res.json(message);
 							})
