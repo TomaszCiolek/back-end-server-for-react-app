@@ -1,14 +1,19 @@
+const result = require('dotenv').config();
+if (result.error) {
+	throw result.error;
+}
+
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const { Client } = require('pg');
 const client = new Client({
-	user: 'postgres',
-	password: 'tomek',
-	host: 'localhost',
-	port: 5432,
-	database: 'socialAppDatabase'
+	user: process.env.POST_USER,
+	password: process.env.POST_PASSWORD,
+	host: process.env.POST_HOST,
+	port: process.env.POST_PORT,
+	database: process.env.POST_DATABASE
 })
 
 client
@@ -168,8 +173,8 @@ function getEventId(req, res, next) {
 		// Next middleware
 		next();
 	} else {
-		// Forbidden
-		res.sendStatus(403);
+		// Bad request
+		res.sendStatus(400);
 		console.log('no token header');
 	}
 }
