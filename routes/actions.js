@@ -7,14 +7,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-const { Pool, Client } = require('pg');
-const client = new Client({
-	user: process.env.POST_USER,
-	password: process.env.POST_PASSWORD,
-	host: process.env.POST_HOST,
-	port: process.env.POST_PORT,
-	database: process.env.POST_DATABASE
-})
+const { Pool } = require('pg');
 
 const pool = new Pool({
 	user: process.env.POST_USER,
@@ -23,11 +16,6 @@ const pool = new Pool({
 	port: process.env.POST_PORT,
 	database: process.env.POST_DATABASE
 })
-
-client
-	.connect()
-	.then(() => console.log('connected to database'))
-	.catch(err => console.error('database connection error', err.stack))
 
 router.post('/acceptfriend', verifyToken, (req, res) => {
 	const { id } = req.body;
