@@ -26,7 +26,7 @@ let map = require('./routes/map');
 app.use('/map', map);
 
 let users = require('./routes/users');
-app.use('/users', users);
+app.use('/users', users.router);
 
 let events = require('./routes/events');
 app.use('/events', events);
