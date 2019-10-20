@@ -21,15 +21,13 @@ client
 	.then(() => console.log('connected to database'))
 	.catch(e => console.error('database connection error', err.stack))
 
-let user_id = -1;
-let event_id = -1;
 router.get('/friendevents', verifyToken, (req, res) => {
 	jwt.verify(req.token, 'secretkey', (err, authData) => {
 		if (err) {
 			// FORBIDDEN
 			res.sendStatus(403);
 		} else {
-			sendFriendEvents(user_id).then(function (events) {
+			sendFriendEvents(req.user_id).then(function (events) {
 				res.json(events);
 			})
 		}
@@ -55,20 +53,21 @@ router.get('/myevents', verifyToken, (req, res) => {
 			// FORBIDDEN
 			res.sendStatus(403);
 		} else {
-			sendMyEvents(user_id).then(function (events) {
+			sendMyEvents(req.user_id).then(function (events) {
 				res.json(events);
 			})
 		}
 	});
 })
 
-router.post('/deleteevents', verifyToken, getEventId, (req, res) => {
+router.post('/deleteevents', verifyToken, (req, res) => {
+	const { event_id } = req.body;
 	jwt.verify(req.token, 'secretkey', (err, authData) => {
 		if (err) {
 			// FORBIDDEN
 			res.sendStatus(403);
 		} else {
-			deleteEvent(event_id).then(function (events) {
+			deleteEvent(req.user_id, event_id).then(function (events) {
 				res.json(events);
 			})
 		}
@@ -155,26 +154,12 @@ function verifyToken(req, res, next) {
 		const bearerToken = bearer[1];
 		// Set the token
 		req.token = bearerToken;
-		// Token
-		//console.log(jwt.verify(bearerToken, 'secretkey'));
-		user_id = jwt.verify(bearerToken, 'secretkey').id;
+		req.user_id = jwt.verify(bearerToken, 'secretkey').id;
 		// Next middleware
 		next();
 	} else {
 		// Forbidden
 		res.sendStatus(403);
-		console.log('no token header');
-	}
-}
-
-function getEventId(req, res, next) {
-	event_id = req.headers.eventId;
-	if (typeof event_id != 'undefined') {
-		// Next middleware
-		next();
-	} else {
-		// Bad request
-		res.sendStatus(400);
 		console.log('no token header');
 	}
 }

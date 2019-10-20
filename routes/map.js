@@ -22,8 +22,7 @@ client
   .then(() => console.log('connected to database'))
   .catch(err => console.error('database connection error', err.stack))
 
-let user_id = -1;
-function createEvent(venue, x, y, eventname, eventdescription, eventdate, group, selectedfriends) {
+function createEvent(venue, x, y, eventname, eventdescription, eventdate, group, selectedfriends, user_id) {
   return new Promise((resolve, reject) => {
     const query = {
       text: 'INSERT INTO events(venue, organizer, x, y, eventname, eventdescription, eventdate, target, selectedfriends) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
@@ -62,7 +61,7 @@ router.post('/event', verifyToken, [
         if (!errors.isEmpty()) {
           console.log({ errors: errors.array() });
         } else {
-          createEvent(venue, x, y, eventname, eventdescription, eventdate, group, selectedfriends)
+          createEvent(venue, x, y, eventname, eventdescription, eventdate, group, selectedfriends, req.user_id)
             .then(function (message) {
               res.json(message);
             })
@@ -83,8 +82,8 @@ function verifyToken(req, res, next) {
     const bearerToken = bearer[1];
     // Set the token
     req.token = bearerToken;
+    req.user_id = jwt.verify(bearerToken, 'secretkey').id;
     // console.log(jwt.verify(bearerToken, 'secretkey'));
-    user_id = jwt.verify(bearerToken, 'secretkey').id;
     // Next middleware
     next();
   } else {

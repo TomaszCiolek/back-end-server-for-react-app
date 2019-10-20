@@ -31,5 +31,8 @@ app.use('/users', users);
 let events = require('./routes/events');
 app.use('/events', events);
 
+let actions = require('./routes/actions');
+app.use('/actions', actions);
+
 // Start express server
 server.listen(port, () => console.log(`Server started on port: ${port}`));

@@ -22,14 +22,13 @@ client
 	.catch(err => console.error('database connection error', err.stack))
 
 
-let unumber = -1;
 router.get('/users', verifyToken, getUnumber, (req, res) => {
 	jwt.verify(req.token, 'secretkey', (err, authData) => {
 		if (err) {
 			//FORBIDDEN
 			res.sendStatus(403);
 		} else {
-			returnAllUsers(unumber).then(function (accounts) {
+			returnAllUsers(req.unumber).then(function (accounts) {
 				res.json(accounts);
 			})
 		}
@@ -118,7 +117,7 @@ function returnFriends() {
 function getUnumber(req, res, next) {
 	unumber = req.headers.unumber;
 	if (typeof unumber != 'undefined') {
-		unumber = parseInt(unumber);
+		req.unumber = parseInt(unumber);
 		// Next middleware
 		next();
 	} else {
